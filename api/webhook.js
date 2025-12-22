@@ -6,22 +6,12 @@ export default async function handler(req, res) {
 
   try {
     const formData = req.body;
-        console.log('Incoming form data:', JSON.stringify(formData, null, 2));
+    console.log('Incoming form data:', JSON.stringify(formData, null, 2));
 
-    // Map Framer form fields to NocoDB columns
+    // Framer sends data with the exact NocoDB field names, so we can use formData directly
+    // Just add the Lead Source field
     const nocodbPayload = {
-      'Contact Name & Role': formData.contactName || formData['Contact Name & Role'] || '',
-      'Event Type': formData.eventType || formData['Event Type'] || '',
-      "Couple's Name (If Applicable)": formData.coupleName || formData["Couple's Name (If Applicable)"] || '',
-      'Email': formData.email || '',
-      'Phone Number': formData.phoneNumber || formData['Phone Number'] || '',
-      'Event Location': formData.eventLocation || formData['Event Location'] || '',
-      'Event Budget': formData.entertainmentBudget || formData['Entertainment Budget'] || '',
-      'Event Service': formData.serviceInterest || formData['What Service Are You Interested In?'] || '',
-      'Event Date': formData.eventDate || formData['Event Date'] || '',
-      'Number of Guests': formData.numberOfGuests || formData['Number of Guests'] || '',
-      'Referral': formData.howDidYouHear || formData['How Did You Hear About Us?'] || '',
-      'Additional Notes': formData.additionalNotes || formData['Additional Notes'] || '',
+      ...formData,
       'Lead Source': 'Contact'
     };
 
@@ -45,6 +35,7 @@ export default async function handler(req, res) {
     }
 
     const result = await response.json();
+    console.log('Successfully created record:', result);
     return res.status(200).json({ success: true, data: result });
 
   } catch (error) {
