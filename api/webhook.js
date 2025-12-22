@@ -6,22 +6,22 @@ export default async function handler(req, res) {
 
   try {
     const formData = req.body;
-    
+
     // Map Framer form fields to NocoDB columns
     const nocodbPayload = {
-      'Contact_Name_&_Role': formData.contactName || formData['Contact Name & Role'] || '',
-      'Event_Type': formData.eventType || formData['Event Type'] || '',
-      'Couples_Name_(If_Applicable)': formData.coupleName || formData["Couple's Name (If Applicable)"] || '',
+      'Contact Name & Role': formData.contactName || formData['Contact Name & Role'] || '',
+      'Event Type': formData.eventType || formData['Event Type'] || '',
+      "Couple's Name (If Applicable)": formData.coupleName || formData["Couple's Name (If Applicable)"] || '',
       'Email': formData.email || '',
-      'Phone_Number': formData.phoneNumber || formData['Phone Number'] || '',
-      'Event_Location': formData.eventLocation || formData['Event Location'] || '',
-      'Entertainment_Budget': formData.entertainmentBudget || formData['Entertainment Budget'] || '',
-      'What_Service_Are_You_Interested_In?': formData.serviceInterest || formData['What Service Are You Interested In?'] || '',
-      'Event_Date': formData.eventDate || formData['Event Date'] || '',
-      'Number_of_Guests': formData.numberOfGuests || formData['Number of Guests'] || '',
-      'How_Did_You_Hear_About_Us?': formData.howDidYouHear || formData['How Did You Hear About Us?'] || '',
-      'Additional_Notes': formData.additionalNotes || formData['Additional Notes'] || '',
-      'Lead_Source': 'Contact'
+      'Phone Number': formData.phoneNumber || formData['Phone Number'] || '',
+      'Event Location': formData.eventLocation || formData['Event Location'] || '',
+      'Event Budget': formData.entertainmentBudget || formData['Entertainment Budget'] || '',
+      'Event Service': formData.serviceInterest || formData['What Service Are You Interested In?'] || '',
+      'Event Date': formData.eventDate || formData['Event Date'] || '',
+      'Number of Guests': formData.numberOfGuests || formData['Number of Guests'] || '',
+      'Referral': formData.howDidYouHear || formData['How Did You Hear About Us?'] || '',
+      'Additional Notes': formData.additionalNotes || formData['Additional Notes'] || '',
+      'Lead Source': 'Contact'
     };
 
     // Call NocoDB API
@@ -45,10 +45,9 @@ export default async function handler(req, res) {
 
     const result = await response.json();
     return res.status(200).json({ success: true, data: result });
-    
+
   } catch (error) {
     console.error('Error processing form:', error);
-    // Return 200 to Framer to prevent user-facing errors
-    return res.status(200).json({ success: false, error: error.message });
+    return res.status(200).json({ success: false, message: 'Error processing form', error: error.message });
   }
 }
