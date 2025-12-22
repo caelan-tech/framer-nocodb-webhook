@@ -6,6 +6,7 @@ export default async function handler(req, res) {
 
   try {
     const formData = req.body;
+        console.log('Incoming form data:', JSON.stringify(formData, null, 2));
 
     // Map Framer form fields to NocoDB columns
     const nocodbPayload = {
