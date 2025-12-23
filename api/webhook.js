@@ -8,12 +8,18 @@ export default async function handler(req, res) {
     const formData = req.body;
     console.log('Incoming form data:', JSON.stringify(formData, null, 2));
 
+    // Extract multiselect field and map it to Event Service
+    const { multiselect, ...rest } = formData;
+    
     // Framer sends data with the exact NocoDB field names, so we can use formData directly
-    // Just add the Lead Source field
+    // Map multiselect to "Event Service" and add Lead Source
     const nocodbPayload = {
-      ...formData,
+      ...rest,
+      'Event Service': multiselect || '',
       'Lead Source': 'Contact'
     };
+
+    console.log('Mapped NocoDB payload:', JSON.stringify(nocodbPayload, null, 2));
 
     // Call NocoDB API
     const nocodbUrl = 'https://app.nocodb.com/api/v2/tables/m4kw9xj20zxqivs/records';
